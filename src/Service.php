@@ -1,5 +1,5 @@
 <?php
-namespace OffbeatWP\Tools\Acf;
+namespace OffbeatWP\Acf;
 
 use OffbeatWP\Contracts\SiteSettings as SiteSettingsContract;
 use OffbeatWP\Content\Taxonomy\TermModel;
