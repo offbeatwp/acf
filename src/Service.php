@@ -23,15 +23,5 @@ class Service extends AbstractService {
         TermModel::macro('getField', function ($name, $format = true) {
             return get_field($name, $this->wpTerm, $format);
         });
-
-        $this->registerIntegrations();
-    }
-
-    public function registerIntegrations() {
-        if (class_exists('\GFAPI')) {
-            offbeat('hooks')->addAction('acf/include_field_types', function () {
-                new Integrations\AcfFieldGravityForms();
-            }); 
-        }
     }
 }
