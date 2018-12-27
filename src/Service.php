@@ -1,16 +1,11 @@
 <?php
 namespace OffbeatWP\Acf;
 
-use OffbeatWP\Contracts\SiteSettings as SiteSettingsContract;
 use OffbeatWP\Content\Taxonomy\TermModel;
 use OffbeatWP\Services\AbstractService;
 use OffbeatWP\Content\Post\PostModel;
 
 class Service extends AbstractService {
-
-    public $bindings = [
-        SiteSettingsContract::class => SiteSettings::class
-    ];
 
     public function register() {
         offbeat('hooks')->addFilter('post_attribute', Hooks\AcfPostAttributeFilter::class, 10, 3);
