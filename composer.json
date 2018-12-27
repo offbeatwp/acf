@@ -9,7 +9,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "OffbeatWP\\Acf": "src"
+            "OffbeatWP\\Acf\\": "src"
         }
     },
     "require": {}
