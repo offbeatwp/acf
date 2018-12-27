@@ -1,5 +1,5 @@
 <?php
-namespace OffbeatWP\Tools\Acf\Hooks;
+namespace OffbeatWP\Acf\Hooks;
 
 use OffbeatWP\Hooks\AbstractFilter;
 
