@@ -1,5 +1,7 @@
 {
     "name": "offbeatwp/acf",
+    "description": "Add some basic ACF functionaility to OffbeatWP",
+    "license": "MIT",
     "type": "offbeatwp-service",
     "authors": [
         {
