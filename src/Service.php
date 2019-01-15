@@ -18,5 +18,7 @@ class Service extends AbstractService {
         TermModel::macro('getField', function ($name, $format = true) {
             return get_field($name, $this->wpTerm, $format);
         });
+
+        offbeat('hooks')->addFilter('acf/update_value/type=relationship', Hooks\AcfPostRelationships::class, 10, 4);
     }
 }
