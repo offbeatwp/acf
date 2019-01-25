@@ -2,7 +2,7 @@
 namespace OffbeatWP\Acf\Hooks;
 
 class AcfGuiAction {
-    public function execute () {
+    public function action () {
         add_filter('acf/location/rule_types', [$this, 'locationRuleTypes']);
         add_filter('acf/location/rule_values/offbeatwp_component', [$this,'locationRulesValues']);
         add_filter('acf/location/rule_match/offbeatwp_component', [$this, 'locationRulesMatch'], 10, 3);
