@@ -1,5 +1,5 @@
 <?php
-namespace OffbeatWP\Tools\Acf\Hooks;
+namespace OffbeatWP\Acf\Hooks;
 
 use OffbeatWP\Hooks\AbstractFilter;
 
@@ -12,7 +12,7 @@ class AcfPostRelationships extends AbstractFilter {
         }
         $relationships = array_map('intval', $relationships);
 
-        $post = raowApp('post')->get($postId);
+        $post = offbeat('post')->get($postId);
 
         $method = $post->getMethodByRelationKey($field['name']);
         if (!is_null($method) && is_callable([$post, $method])) {
