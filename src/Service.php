@@ -12,7 +12,7 @@ class Service extends AbstractService {
         offbeat('hooks')->addFilter('term_attribute', Hooks\AcfTermAttributeFilter::class, 10, 3);
 
         PostModel::macro('getField', function ($name, $format = true) {
-            return get_field($name, $this->id, $format);
+            return get_field($name, $this->getId(), $format);
         });
 
         TermModel::macro('getField', function ($name, $format = true) {
