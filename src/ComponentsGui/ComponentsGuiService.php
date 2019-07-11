@@ -30,7 +30,7 @@ class ComponentsGuiService extends AbstractService {
             if (!method_exists($component, 'settings') || (!$component::supports('pagebuilder') && !$component::supports('widget') && !$component::supports('editor'))) continue;
 
             $componentSettings = $component::settings();
-            $choices[$componentKey] = $componentSettings['name'];
+            $choices[$component::getSlug()] = $componentSettings['name'];
         }
         
         return $choices;
@@ -45,6 +45,12 @@ class ComponentsGuiService extends AbstractService {
 
     public function registerFieldsOnComponent($form, $component) {
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
+
+        if ($component::getSlug() == 'open-acount-extended') {
+            error_log('pino');
+            error_log(print_r($fieldGroups,true));
+        }
+
         if (empty($fieldGroups)) return $form;
 
         $fields = [];
