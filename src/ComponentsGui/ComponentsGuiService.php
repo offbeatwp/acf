@@ -1,11 +1,18 @@
 <?php
-namespace OffbeatWP\Acf\Hooks;
+namespace OffbeatWP\Acf\ComponentsGui;
 
-class AcfGuiAction {
-    public function action () {
+use OffbeatWP\Services\AbstractService;
+use OffbeatWP\Form\Form;
+use OffbeatWP\AcfCore\FieldsMapperReverse;
+
+class ComponentsGuiService extends AbstractService {
+
+    public function register() {
         add_filter('acf/location/rule_types', [$this, 'locationRuleTypes']);
         add_filter('acf/location/rule_values/offbeatwp_component', [$this,'locationRulesValues']);
         add_filter('acf/location/rule_match/offbeatwp_component', [$this, 'locationRulesMatch'], 10, 3);
+
+        add_filter('offbeatwp/component/form', [$this, 'registerFieldsOnComponent'], 10, 2);
     }
 
     public function locationRuleTypes($choices)
@@ -34,5 +41,28 @@ class AcfGuiAction {
         if (!isset($options['offbeatwp_component']) || $options['offbeatwp_component'] != $rule['value']) return $match;
 
         return true;
+    }
+
+    public function registerFieldsOnComponent($form, $component) {
+        $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
+        if (empty($fieldGroups)) return $form;
+
+        $fields = [];
+
+        foreach ($fieldGroups as $fieldGroup) {
+            $fieldGroupFields = acf_get_fields($fieldGroup['key']);
+
+            if(!empty($fieldGroupFields))
+                $fields = array_merge($fields, $fieldGroupFields);
+        }
+
+        $acfDefinedForm = new Form();
+        $acfDefinedForm->setFieldPrefix($component::getSlug());
+        FieldsMapperReverse::map($fields, $acfDefinedForm);
+
+        $form->add($acfDefinedForm, true);
+
+        return $form;
+
     }
 }

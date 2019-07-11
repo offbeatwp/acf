@@ -20,7 +20,5 @@ class Service extends AbstractService {
         });
 
         offbeat('hooks')->addFilter('acf/update_value/type=relationship', Hooks\AcfPostRelationships::class, 10, 4);
-        
-        offbeat('hooks')->addAction('acf/init', Hooks\AcfGuiAction::class);
     }
 }
