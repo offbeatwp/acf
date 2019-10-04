@@ -5,6 +5,8 @@ use OffbeatWP\Hooks\AbstractFilter;
 
 class AcfPostRelationships extends AbstractFilter {
     public function filter ($value, $postId, $field, $_value) {
+        if (empty($value) || !is_numeric($postId)) return $value;
+
         $post = offbeat('post')->get($postId);
         $method = $post->getMethodByRelationKey($field['name']);
 
@@ -17,6 +19,7 @@ class AcfPostRelationships extends AbstractFilter {
         if (!is_array($relationships) && !empty($relationships)) {
             $relationships = [$relationships];
         }
+
         $relationships = array_map('intval', $relationships);
 
         if (method_exists($post->$method(), 'attach')) {
