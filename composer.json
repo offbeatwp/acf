@@ -15,6 +15,6 @@
         }
     },
     "require": {
-        "offbeatwp/acf-core": "1-2"
+        "offbeatwp/acf-core": "1 - 2"
     }
 }
