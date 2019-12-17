@@ -45,12 +45,6 @@ class ComponentsGuiService extends AbstractService {
 
     public function registerFieldsOnComponent($form, $component) {
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
-
-        if ($component::getSlug() == 'open-acount-extended') {
-            error_log('pino');
-            error_log(print_r($fieldGroups,true));
-        }
-
         if (empty($fieldGroups)) return $form;
 
         $fields = [];
