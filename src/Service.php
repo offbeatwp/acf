@@ -15,6 +15,10 @@ class Service extends AbstractService {
             return get_field($name, $this->getId(), $format);
         });
 
+        PostModel::macro('updateField', function ($name, $value) {
+            return update_field($name, $value, $this->getId());
+        });
+
         TermModel::macro('getField', function ($name, $format = true) {
             return get_field($name, $this->wpTerm, $format);
         });

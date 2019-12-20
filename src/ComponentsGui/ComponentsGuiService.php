@@ -44,6 +44,8 @@ class ComponentsGuiService extends AbstractService {
     }
 
     public function registerFieldsOnComponent($form, $component) {
+        if (!function_exists('acf_get_field_groups')) return $form;
+        
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
         if (empty($fieldGroups)) return $form;
 
