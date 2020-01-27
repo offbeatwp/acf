@@ -13,8 +13,5 @@
         "psr-4": {
             "OffbeatWP\\Acf\\": "src"
         }
-    },
-    "require": {
-        "offbeatwp/acf-core": "^2.0.0-beta"
     }
 }
