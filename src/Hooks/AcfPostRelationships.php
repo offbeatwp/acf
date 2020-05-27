@@ -5,12 +5,24 @@ use OffbeatWP\Hooks\AbstractFilter;
 
 class AcfPostRelationships extends AbstractFilter {
     public function filter ($value, $postId, $field, $_value) {
-        if (empty($value) || !is_numeric($postId)) return $value;
+        if (!is_numeric($postId)) {
+            return $value;
+        }
 
         $post = offbeat('post')->get($postId);
         $method = $post->getMethodByRelationKey($field['name']);
 
         if (is_null($method) || !is_callable([$post, $method])) {
+            return $value;
+        }
+
+        if (empty($value)) {
+            if (method_exists($post->$method(), 'detachAll')) {
+                $post->$method()->detachAll();
+            } else {
+                $post->$method()->dissociateAll();
+            }
+
             return $value;
         }
 
