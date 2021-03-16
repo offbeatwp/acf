@@ -62,9 +62,19 @@ class ComponentsGuiService extends AbstractService {
         $acfDefinedForm->setFieldPrefix($component::getSlug());
         FieldsMapperReverse::map($fields, $acfDefinedForm);
 
-        $form->add($acfDefinedForm, true);
+        $injectAcfFields = $component::getSetting('injectAcfFields');
 
-        return $form;
+        switch ($injectAcfFields) {
+            case 'top':
+                $acfDefinedForm->add($form);
 
+                return $acfDefinedForm;
+                break;
+            default:
+                $form->add($acfDefinedForm, true);
+
+                return $form;
+                break;
+        }
     }
 }
