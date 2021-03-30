@@ -7,6 +7,6 @@ namespace  {
 
 namespace OffbeatWP\Content\Taxonomy {
     class TermModel {
-        public function getField(string $selector, mixed $post_id = false, bool $format_value = true): mixed;
+        public function getField(string $selector, bool $format_value = true): mixed;
     }
 }
