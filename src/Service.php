@@ -1,6 +1,7 @@
 <?php
 namespace OffbeatWP\Acf;
 
+use OffbeatWP\Acf\Fields\DisabledTextField;
 use OffbeatWP\Acf\Fields\HiddenUniqueIdField;
 use OffbeatWP\Acf\Hooks\AcfConverPostObject;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
@@ -31,6 +32,7 @@ class Service extends AbstractService {
                 return null;
             }
 
+            /** @var PostModel $this */
             return get_field($name, $this->getId(), $format);
         });
 
@@ -39,6 +41,7 @@ class Service extends AbstractService {
                 return null;
             }
 
+            /** @var PostModel $this */
             return get_field_object($name, $this->getId(), $format);
         });
 
@@ -47,6 +50,7 @@ class Service extends AbstractService {
                 return null;
             }
 
+            /** @var PostModel $this */
             return update_field($name, $value, $this->getId());
         });
 
@@ -55,6 +59,7 @@ class Service extends AbstractService {
                 return null;
             }
 
+            /** @var TermModel $this */
             return get_field($name, $this->wpTerm, $format);
         });
     }
@@ -66,9 +71,10 @@ class Service extends AbstractService {
     }
 
     private function registerFields() {
-        if (class_exists('acf_field') && function_exists('add_action')) {
-            add_action('acf/include_field_types', function () {
+        if (function_exists('add_action') && class_exists('acf_field')) {
+            add_action('acf/include_field_types', static function () {
                 new HiddenUniqueIdField();
+                new DisabledTextField();
             });
         }
     }
@@ -79,6 +85,7 @@ class Service extends AbstractService {
             return [];
         }
 
+        /** @var TermModel $this */
         return get_field($identifier, $this->wpTerm, true) ?: [];
     }
 }
