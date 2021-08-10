@@ -1,15 +1,22 @@
 <?php
 namespace OffbeatWP\Acf\Hooks;
 
+use Exception;
 use OffbeatWP\Hooks\AbstractFilter;
 
 class AcfPostRelationships extends AbstractFilter {
+    /** @throws Exception */
     public function filter ($value, $postId, $field, $_value) {
         if (!is_numeric($postId)) {
             return $value;
         }
 
         $post = offbeat('post')->get($postId);
+
+        if (!$post) {
+            throw new Exception('Post not found');
+        }
+
         $method = $post->getMethodByRelationKey($field['name']);
 
         if (is_null($method) || !is_callable([$post, $method])) {
@@ -28,7 +35,7 @@ class AcfPostRelationships extends AbstractFilter {
 
         $relationships = $value;
 
-        if (!is_array($relationships) && !empty($relationships)) {
+        if (!is_array($relationships)) {
             $relationships = [$relationships];
         }
 

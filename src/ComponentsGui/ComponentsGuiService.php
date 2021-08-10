@@ -15,7 +15,7 @@ class ComponentsGuiService extends AbstractService {
         add_filter('offbeatwp/component/form', [$this, 'registerFieldsOnComponent'], 10, 2);
     }
 
-    public function locationRuleTypes($choices)
+    public function locationRuleTypes($choices): array
     {
         $choices['OffbeatWP']['offbeatwp_component'] = 'Component';
 
@@ -38,12 +38,15 @@ class ComponentsGuiService extends AbstractService {
 
     public function locationRulesMatch($match, $rule, $options)
     {   
-        if (!isset($options['offbeatwp_component']) || $options['offbeatwp_component'] != $rule['value']) return $match;
+        if (!isset($options['offbeatwp_component']) || $options['offbeatwp_component'] != $rule['value']) {
+            return $match;
+        }
 
         return true;
     }
 
-    public function registerFieldsOnComponent($form, $component) {
+    public function registerFieldsOnComponent($form, $component): Form
+    {
         if (!function_exists('acf_get_field_groups')) return $form;
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
 
@@ -54,8 +57,9 @@ class ComponentsGuiService extends AbstractService {
         foreach ($fieldGroups as $fieldGroup) {
             $fieldGroupFields = acf_get_fields($fieldGroup['key']);
 
-            if(!empty($fieldGroupFields))
+            if(!empty($fieldGroupFields)) {
                 $fields = array_merge($fields, $fieldGroupFields);
+            }
         }
 
         $acfDefinedForm = new Form();
@@ -67,14 +71,10 @@ class ComponentsGuiService extends AbstractService {
         switch ($injectAcfFields) {
             case 'top':
                 $acfDefinedForm->add($form);
-
                 return $acfDefinedForm;
-                break;
             default:
                 $form->add($acfDefinedForm, true);
-
                 return $form;
-                break;
         }
     }
 }

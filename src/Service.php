@@ -1,6 +1,7 @@
 <?php
 namespace OffbeatWP\Acf;
 
+use OffbeatWP\Acf\Fields\DisabledTextField;
 use OffbeatWP\Acf\Fields\HiddenUniqueIdField;
 use OffbeatWP\Acf\Hooks\AcfConverPostObject;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
@@ -13,44 +14,67 @@ use OffbeatWP\Content\Post\PostModel;
 class Service extends AbstractService {
 
     public function register() {
-        // Attribute Hooks
+        $this->registerAttributeHooks();
+        $this->registerMacros();
+        $this->registerRelationHooks();
+        $this->registerFields();
+    }
+
+    // Registry Methods
+    private function registerAttributeHooks() {
         offbeat('hooks')->addFilter('post_attribute', AcfPostAttributeFilter::class, 10, 3);
         offbeat('hooks')->addFilter('term_attribute', AcfTermAttributeFilter::class, 10, 3);
+    }
 
-        // Macros
+    private function registerMacros() {
         PostModel::macro('getField', function ($name, $format = true) {
-            if (!function_exists('get_field')) return null;
+            if (!function_exists('get_field')) {
+                return null;
+            }
 
+            /** @var PostModel $this */
             return get_field($name, $this->getId(), $format);
         });
 
         PostModel::macro('getFieldObject', function ($name, $format = true) {
-            if (!function_exists('get_field_object')) return null;
+            if (!function_exists('get_field_object')) {
+                return null;
+            }
 
+            /** @var PostModel $this */
             return get_field_object($name, $this->getId(), $format);
         });
 
         PostModel::macro('updateField', function ($name, $value) {
-            if (!function_exists('update_field')) return null;
+            if (!function_exists('update_field')) {
+                return null;
+            }
 
+            /** @var PostModel $this */
             return update_field($name, $value, $this->getId());
         });
 
         TermModel::macro('getField', function ($name, $format = true) {
-            if (!function_exists('get_field')) return null;
+            if (!function_exists('get_field')) {
+                return null;
+            }
 
+            /** @var TermModel $this */
             return get_field($name, $this->wpTerm, $format);
         });
+    }
 
-        // Relationship Hooks
+    private function registerRelationHooks() {
         offbeat('hooks')->addFilter('acf/update_value/type=relationship', AcfPostRelationships::class, 10, 4);
         offbeat('hooks')->addFilter('acf/update_value/type=post_object', AcfPostRelationships::class, 10, 4);
         offbeat('hooks')->addFilter('acf/format_value/type=relationship', AcfConverPostObject::class, 99, 3);
+    }
 
-        // Fields
-        if (class_exists('acf_field') && function_exists('add_action')) {
-            add_action('acf/include_field_types', function () {
+    private function registerFields() {
+        if (function_exists('add_action') && class_exists('acf_field')) {
+            add_action('acf/include_field_types', static function () {
                 new HiddenUniqueIdField();
+                new DisabledTextField();
             });
         }
     }
