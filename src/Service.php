@@ -78,14 +78,4 @@ class Service extends AbstractService {
             });
         }
     }
-
-    // Macro functions
-    protected function getArray(string $identifier): array {
-        if (!function_exists('get_field')) {
-            return [];
-        }
-
-        /** @var TermModel $this */
-        return get_field($identifier, $this->wpTerm, true) ?: [];
-    }
 }
