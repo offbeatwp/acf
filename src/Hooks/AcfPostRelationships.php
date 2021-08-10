@@ -19,7 +19,7 @@ class AcfPostRelationships extends AbstractFilter {
 
         $method = $post->getMethodByRelationKey($field['name']);
 
-        if (!is_callable([$post, $method]) || is_null($method)) {
+        if (is_null($method) || !is_callable([$post, $method])) {
             return $value;
         }
 
