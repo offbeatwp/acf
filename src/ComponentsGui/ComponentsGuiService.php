@@ -26,11 +26,15 @@ class ComponentsGuiService extends AbstractService {
     {
         $components = offbeat('components')->get();
 
-        if (!empty($components)) foreach($components as $componentKey => $component) {
-            if (!method_exists($component, 'settings') || (!$component::supports('pagebuilder') && !$component::supports('widget') && !$component::supports('editor'))) continue;
+        if (!empty($components)) {
+            foreach ($components as $component) {
+                if (!method_exists($component, 'settings') || (!$component::supports('pagebuilder') && !$component::supports('widget') && !$component::supports('editor'))) {
+                    continue;
+                }
 
-            $componentSettings = $component::settings();
-            $choices[$component::getSlug()] = $componentSettings['name'];
+                $componentSettings = $component::settings();
+                $choices[$component::getSlug()] = $componentSettings['name'];
+            }
         }
         
         return $choices;
@@ -47,10 +51,14 @@ class ComponentsGuiService extends AbstractService {
 
     public function registerFieldsOnComponent($form, $component): Form
     {
-        if (!function_exists('acf_get_field_groups')) return $form;
+        if (!function_exists('acf_get_field_groups')) {
+            return $form;
+        }
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
 
-        if (empty($fieldGroups)) return $form;
+        if (empty($fieldGroups)) {
+            return $form;
+        }
 
         $fields = [];
 
