@@ -19,8 +19,10 @@ class DisabledTextField extends acf_field
     public function render_field(array $field)
     {
         $value = $field['value'];
+        $renderAs = $field['render_as'] ?? null;
 
-        if ($field['render_as'] === 'date_from_timestamp') {
+
+        if ($renderAs === 'date_from_timestamp') {
             $value = Carbon::createFromTimestamp($value)->format('d-m-Y H:m:s');
         }
 
