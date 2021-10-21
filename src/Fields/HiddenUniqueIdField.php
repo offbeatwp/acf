@@ -39,6 +39,6 @@ class HiddenUniqueIdField extends acf_field
             return $value;
         }
 
-        return uniqid();
+        return uniqid('ob', false);
     }
 }
