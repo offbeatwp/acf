@@ -1,8 +1,9 @@
 <?php
 namespace OffbeatWP\Acf;
 
-use OffbeatWP\Acf\Fields\DisabledTextField;
-use OffbeatWP\Acf\Fields\HiddenUniqueIdField;
+use OffbeatWP\Acf\Fields\Acf\AcfDisabledTextField;
+use OffbeatWP\Acf\Fields\Acf\AcfHiddenUniqueIdField;
+use OffbeatWP\Acf\Fields\Acf\AcfThemeColorField;
 use OffbeatWP\Acf\Hooks\AcfConverPostObject;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
 use OffbeatWP\Acf\Hooks\AcfPostRelationships;
@@ -73,8 +74,9 @@ class Service extends AbstractService {
     private function registerFields() {
         if (function_exists('add_action') && class_exists('acf_field')) {
             add_action('acf/include_field_types', static function () {
-                new HiddenUniqueIdField();
-                new DisabledTextField();
+                new AcfHiddenUniqueIdField();
+                new AcfDisabledTextField();
+                new AcfThemeColorField();
             });
         }
     }

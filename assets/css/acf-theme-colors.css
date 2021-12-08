@@ -1,0 +1,22 @@
+.acf-theme-color-field > input[type=radio] {
+    display: none;
+}
+.acf-theme-color-field > input[type=radio]:checked + label .acf-theme-color-field__square {
+    border: 3px solid #007bff;
+}
+.acf-theme-color-field > label {
+    display: flex;
+    margin: 5px 10px 5px 0;
+}
+.acf-theme-color-field__square {
+    display: inline-block;
+    box-sizing: border-box;
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+    border-radius: 4px;
+}
+.acf-theme-color-field__label {
+    font-size: 0.7rem;
+    line-height: 30px;
+}
