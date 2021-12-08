@@ -1,5 +1,5 @@
 <?php
-namespace OffbeatWP\Acf\Fields\Acf;
+namespace OffbeatWP\Acf\Fields;
 
 use OffbeatWP\AcfCore\Fields\AcfField;
 
