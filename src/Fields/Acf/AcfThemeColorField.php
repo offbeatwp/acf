@@ -6,21 +6,6 @@ use Illuminate\Support\Collection;
 
 class AcfThemeColorField extends acf_field
 {
-
-
-    /*
-    *  __construct
-    *
-    *  This function will setup the field type data
-    *
-    *  @type    function
-    *  @date    5/03/2014
-    *  @since   5.0.0
-    *
-    *  @param   n/a
-    *  @return  n/a
-    */
-
     public function initialize()
     {
         // vars
