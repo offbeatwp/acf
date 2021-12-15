@@ -33,10 +33,6 @@ class AcfHiddenUniqueIdField extends acf_field
 
     public function update_value($value): string
     {
-        if (!empty($value)) {
-            return $value;
-        }
-
-        return uniqid('ob', false);
+        return $value ?: uniqid('ob', false);
     }
 }

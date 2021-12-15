@@ -1,7 +1,6 @@
 <?php
 namespace OffbeatWP\Acf\ComponentsGui;
 
-use OffbeatWP\Exceptions\NonexistentComponentException;
 use OffbeatWP\Services\AbstractService;
 use OffbeatWP\Form\Form;
 use OffbeatWP\AcfCore\FieldsMapperReverse;
@@ -23,12 +22,11 @@ class ComponentsGuiService extends AbstractService {
         return $choices;
     }
 
-    /** @throws NonexistentComponentException */
     public function locationRulesValues($choices)
     {
         $components = offbeat('components')->get();
 
-        if (!empty($components)) {
+        if ($components) {
             foreach ($components as $component) {
                 if (!method_exists($component, 'settings') || (!$component::supports('pagebuilder') && !$component::supports('widget') && !$component::supports('editor'))) {
                     continue;
@@ -59,7 +57,7 @@ class ComponentsGuiService extends AbstractService {
 
         $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
 
-        if (empty($fieldGroups)) {
+        if (!$fieldGroups) {
             return $form;
         }
 
@@ -68,7 +66,7 @@ class ComponentsGuiService extends AbstractService {
         foreach ($fieldGroups as $fieldGroup) {
             $fieldGroupFields = acf_get_fields($fieldGroup['key']);
 
-            if(!empty($fieldGroupFields)) {
+            if($fieldGroupFields) {
                 $fields = array_merge($fields, $fieldGroupFields);
             }
         }

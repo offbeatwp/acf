@@ -4,131 +4,133 @@ namespace OffbeatWP\Acf\Fields\Acf;
 use acf_field;
 use Illuminate\Support\Collection;
 
-class AcfThemeColorField extends acf_field {
+class AcfThemeColorField extends acf_field
+{
+    /*
+    *  __construct
+    *
+    *  This function will setup the field type data
+    *
+    *  @type    function
+    *  @date    5/03/2014
+    *  @since   5.0.0
+    *
+    *  @param   n/a
+    *  @return  n/a
+    */
 
+    public function initialize()
+    {
+        // vars
+        $this->name = 'offbeat_theme_color_field';
+        $this->label = __('Theme color', 'acf');
+        $this->category = 'OffbeatWP';
+    }
 
-	/*
-	*  __construct
-	*
-	*  This function will setup the field type data
-	*
-	*  @type    function
-	*  @date    5/03/2014
-	*  @since   5.0.0
-	*
-	*  @param   n/a
-	*  @return  n/a
-	*/
+    public function render_field($field)
+    {
+        // vars
+        $e = '';
+        $checked = null;
 
-	function initialize() {
+        $themeColors = config('themes.colors');
 
-		// vars
-		$this->name     = 'offbeat_theme_color_field';
-		$this->label    = __( 'Theme color', 'acf' );
-		$this->category = 'OffbeatWP';
+        if (empty($themeColors)) {
+            echo __('No theme colors defined in `config/themes.php`', 'offbeatwp');
+            return;
+        }
 
-	}
+        if ($themeColors instanceof Collection) {
+            $themeColors = $themeColors->all();
+        }
 
-	function render_field( $field ) {
+        $ul = [
+            'class' => 'acf-theme-colors',
+        ];
 
-		// vars
-		$e  = '';
-		$checked = null;
+        // append to class
+        $ul['class'] .= ' ' . $field['class'];
+        $ul['class'] .= ' ' . 'acf-hl';
 
-		$themeColors = config('themes.colors');
+        // Determine selected value.
+        $value = (string)$field['value'];
 
-		if (empty($themeColors)) {
-			echo __('No theme colors defined in `config/themes.php`', 'offbeatwp');
-			return;
-		}
+        // 1. Selected choice.
+        if (isset($themeColors[$value])) {
+            $checked = $value;
+        }
 
-		if ($themeColors instanceOf Collection) {
-			$themeColors = $themeColors->all();
-		}
+        // Bail early if no choices.
+        if (!$themeColors) {
+            return;
+        }
 
-		$ul = array(
-			'class'             => 'acf-theme-colors',
-		);
+        // Hiden input.
+        $e .= acf_get_hidden_input(['name' => $field['name']]);
 
-		// append to class
-		$ul['class'] .= ' ' . $field['class'];
-		$ul['class'] .= ' ' . 'acf-hl';
+        // Open <ul>.
+        $e .= '<ul ' . acf_esc_attr($ul) . '>';
 
-		// Determine selected value.
-		$value = (string) $field['value'];
+        // Loop through choices.
+        foreach ($themeColors as $value => $label) {
+            $is_selected = false;
 
-		// 1. Selected choice.
-		if ( isset( $themeColors[ $value ] ) ) {
-			$checked = (string) $value;
-		}
+            // Ensure value is a string.
+            $value = (string)$value;
 
-		// Bail early if no choices.
-		if ( empty( $themeColors ) ) {
-			return;
-		}
+            // Define input attrs.
+            $attrs = [
+                'type' => 'radio',
+                'id' => sanitize_title($field['id'] . '-' . $value),
+                'name' => $field['name'],
+                'value' => $value,
+            ];
 
-		// Hiden input.
-		$e .= acf_get_hidden_input( array( 'name' => $field['name'] ) );
+            // Check if selected.
+            if (esc_attr($value) === esc_attr($checked)) {
+                $attrs['checked'] = 'checked';
+                $is_selected = true;
+            }
 
-		// Open <ul>.
-		$e .= '<ul ' . acf_esc_attr( $ul ) . '>';
+            // Check if is disabled.
+            if (isset($field['disabled']) && acf_in_array($value, $field['disabled'])) {
+                $attrs['disabled'] = 'disabled';
+            }
 
-		// Loop through choices.
-		foreach ( $themeColors as $value => $label ) {
-			$is_selected = false;
+            // append
+            $e .= '<li class="acf-theme-color-field"><input ' . acf_esc_attr(
+                    $attrs
+                ) . '/><label' . ($is_selected ? ' class="selected"' : '') . ' for="' . $attrs['id'] . '"><span class="acf-theme-color-field__square bg-' . $value . '"></span><span class="acf-theme-color-field__label">' . acf_esc_html(
+                    $label
+                ) . '</span></label></li>';
+        }
 
-			// Ensure value is a string.
-			$value = (string) $value;
+        // Close <ul>.
+        $e .= '</ul>';
 
-			// Define input attrs.
-			$attrs = array(
-				'type'  => 'radio',
-				'id'    => sanitize_title( $field['id'] . '-' . $value ),
-				'name'  => $field['name'],
-				'value' => $value,
-			);
+        // Output HTML.
+        echo $e;
+    }
 
-			// Check if selected.
-			if ( esc_attr( $value ) === esc_attr( $checked ) ) {
-				$attrs['checked'] = 'checked';
-				$is_selected      = true;
-			}
+    public function update_field($field)
+    {
+        return $field;
+    }
 
-			// Check if is disabled.
-			if ( isset( $field['disabled'] ) && acf_in_array( $value, $field['disabled'] ) ) {
-				$attrs['disabled'] = 'disabled';
-			}
+    public function load_value($value, $post_id, $field)
+    {
+        // must be single value
+        if (is_array($value)) {
+            $value = array_pop($value);
+        }
 
-			// append
-			$e .= '<li class="acf-theme-color-field"><input ' . acf_esc_attr( $attrs ) . '/><label' . ( $is_selected ? ' class="selected"' : '' ) . ' for="' . $attrs['id'] . '"><span class="acf-theme-color-field__square bg-' . $value . '"></span><span class="acf-theme-color-field__label">' . acf_esc_html( $label ) . '</span></label></li>';
-		}
+        // return
+        return $value;
+    }
 
-		// Close <ul>.
-		$e .= '</ul>';
-
-		// Output HTML.
-		echo $e;
-	}
-
-	function update_field( $field ) {
-		return $field;
-	}
-
-	function load_value( $value, $post_id, $field ) {
-
-		// must be single value
-		if ( is_array( $value ) ) {
-
-			$value = array_pop( $value );
-
-		}
-
-		// return
-		return $value;
-	}
-
-	function input_admin_enqueue_scripts() {
-		// style
-		wp_enqueue_style( 'acf-theme-colors', get_template_directory_uri() . "/vendor/offbeatwp/acf/assets/css/acf-theme-colors.css", [], false );
-	}
+    public function input_admin_enqueue_scripts()
+    {
+        // style
+        wp_enqueue_style('acf-theme-colors', get_template_directory_uri() . '/vendor/offbeatwp/acf/assets/css/acf-theme-colors.css', [], false);
+    }
 }
