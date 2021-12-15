@@ -5,10 +5,6 @@ use OffbeatWP\Hooks\AbstractFilter;
 
 class AcfPostAttributeFilter extends AbstractFilter {
     public function filter ($value, string $name, $model) {
-        if (!empty($fieldValue = get_field($name, $model->id))) {
-            return $fieldValue;
-        }
-
-        return $value;
+        return get_field($name, $model->id) ?: $value;
     }
 }
