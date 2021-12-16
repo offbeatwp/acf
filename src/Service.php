@@ -3,8 +3,10 @@ namespace OffbeatWP\Acf;
 
 use OffbeatWP\Acf\Fields\Acf\AcfDisabledTextField;
 use OffbeatWP\Acf\Fields\Acf\AcfHiddenUniqueIdField;
+use OffbeatWP\Acf\Fields\Acf\AcfIconSelectField;
 use OffbeatWP\Acf\Fields\Acf\AcfThemeColorField;
 use OffbeatWP\Acf\Hooks\AcfConverPostObject;
+use OffbeatWP\Acf\Hooks\AcfLoadFieldIconsFilter;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
 use OffbeatWP\Acf\Hooks\AcfPostRelationships;
 use OffbeatWP\Acf\Hooks\AcfTermAttributeFilter;
@@ -25,6 +27,7 @@ class Service extends AbstractService {
     private function registerAttributeHooks() {
         offbeat('hooks')->addFilter('post_attribute', AcfPostAttributeFilter::class, 10, 3);
         offbeat('hooks')->addFilter('term_attribute', AcfTermAttributeFilter::class, 10, 3);
+        offbeat('hooks')->addFilter('acf/load_field', AcfLoadFieldIconsFilter::class, 10, 3);
     }
 
     private function registerMacros() {
@@ -77,6 +80,7 @@ class Service extends AbstractService {
                 new AcfHiddenUniqueIdField();
                 new AcfDisabledTextField();
                 new AcfThemeColorField();
+                new AcfIconSelectField();
             });
         }
     }
