@@ -26,21 +26,22 @@ class AcfIconSelectField extends acf_field
         // vars
         $html = '';
         $buttons = [];
-        $value = esc_attr($field['value']);
+        $selectedValue = esc_attr($field['value']);
 
-        // bail ealrly if no choices
+        // bail early if no choices
         if (empty($field['choices'])) {
+            echo '<i>' . __('No selectable icons were detected', 'offbeatwp') . '</i>';
             return;
         }
 
         // buttons
-        foreach ($field['choices'] as $_value => $_label) {
+        foreach ($field['choices'] as $value => $label) {
             // append
             $buttons[] = [
                 'name' => $field['name'],
-                'value' => $_value,
-                'label' => $_label,
-                'checked' => ($value === esc_attr($_value)),
+                'value' => $value,
+                'label' => $label,
+                'checked' => ($selectedValue === esc_attr($value)),
             ];
         }
 
@@ -57,11 +58,11 @@ class AcfIconSelectField extends acf_field
 
         $div['data-allow_null'] = 1;
 
-        // hdden input
+        // hidden input
         $html .= acf_get_hidden_input(['name' => $field['name']]);
 
         // open
-        /** @noinspection PhpDeprecationInspection Replacement method is only available since acf 5.6 */
+        /** @noinspection PhpDeprecationInspection Replacement only exists since acf 5.8.1 */
         $html .= '<div ' . acf_esc_attr($div) . '>';
 
         // loop
@@ -88,28 +89,6 @@ class AcfIconSelectField extends acf_field
     {
         // encode choices (convert from array)
         $field['choices'] = acf_encode_choices($field['choices']);
-
-        // choices
-        acf_render_field_setting(
-            $field,
-            [
-                'label' => __('Choices', 'acf'),
-                'instructions' => __('Enter each choice on a new line.', 'acf') . '<br /><br />' . __('For more control, you may specify both a value and label like this:', 'acf') . '<br /><br />' . __('red : Red', 'acf'),
-                'type' => 'textarea',
-                'name' => 'choices',
-            ]
-        );
-
-        // default_value
-        acf_render_field_setting(
-            $field,
-            [
-                'label' => __('Default Value', 'acf'),
-                'instructions' => __('Appears when creating a new post', 'acf'),
-                'type' => 'text',
-                'name' => 'default_value',
-            ]
-        );
 
         // layout
         acf_render_field_setting(
