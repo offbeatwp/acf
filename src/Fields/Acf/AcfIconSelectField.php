@@ -170,4 +170,10 @@ class AcfIconSelectField extends acf_field
 
         return $schema;
     }
+
+    public function input_admin_enqueue_scripts()
+    {
+        // style
+        wp_enqueue_style('acf-icon-select', get_template_directory_uri() . '/vendor/offbeatwp/acf/assets/css/acf-icon-select.css', [], false);
+    }
 }
