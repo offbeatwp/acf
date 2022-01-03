@@ -1,3 +1,7 @@
 .acf-field-offbeat-icon-select input:checked + i {
-    color: var(--wp-admin-theme-color);
+    color: var(--wp-admin-theme-color) !important;
+}
+
+.acf-field-offbeat-icon-select label {
+    min-width: 35px;
 }
