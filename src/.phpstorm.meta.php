@@ -22,7 +22,7 @@ namespace OffbeatWP\Content\Post {
     class TermModel {
         /**
          * This function will return a custom field value for a specific field name/key.
-         * @param non-empty-string $key
+         * @param non-empty-string $key The field name or key.
          * @param $format Whether or not to format the value. When <i>false</i>, a field will not use its 'return option' to format the value but return only what was saved in the database.
          * @return mixed
          */
