@@ -11,10 +11,13 @@ class ComponentsGuiService extends AbstractService {
         add_filter('acf/location/rule_types', [$this, 'locationRuleTypes']);
         add_filter('acf/location/rule_values/offbeatwp_component', [$this,'locationRulesValues']);
         add_filter('acf/location/rule_match/offbeatwp_component', [$this, 'locationRulesMatch'], 10, 3);
-
         add_filter('offbeatwp/component/form', [$this, 'registerFieldsOnComponent'], 10, 2);
     }
 
+    /**
+     * @param array $choices
+     * @return array
+     */
     public function locationRuleTypes($choices): array
     {
         $choices['OffbeatWP']['offbeatwp_component'] = 'Component';
@@ -22,6 +25,10 @@ class ComponentsGuiService extends AbstractService {
         return $choices;
     }
 
+    /**
+     * @param array $choices
+     * @return array
+     */
     public function locationRulesValues($choices)
     {
         $components = offbeat('components')->get();
@@ -66,7 +73,7 @@ class ComponentsGuiService extends AbstractService {
         foreach ($fieldGroups as $fieldGroup) {
             $fieldGroupFields = acf_get_fields($fieldGroup['key']);
 
-            if($fieldGroupFields) {
+            if ($fieldGroupFields) {
                 $fields = array_merge($fields, $fieldGroupFields);
             }
         }
@@ -83,6 +90,7 @@ class ComponentsGuiService extends AbstractService {
         }
 
         $form->add($acfDefinedForm, true);
+
         return $form;
     }
 }
