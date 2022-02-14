@@ -14,7 +14,7 @@ namespace OffbeatWP\Content\Post {
         /**
          * @param non-empty-string $key The field name or key.
          * @param mixed $value The value to save in the database.
-         * @return bool True on successful update, false on failure.s
+         * @return bool Returns <i>true</i> on successful update or <i>false</i> on failure.
          */
         public function updateField(string $key, $value): bool;
     }
