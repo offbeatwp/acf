@@ -1,26 +1,29 @@
 <?php
 
+// This class exists so that PHPStorm will not complain about certain macro'd methods not existing.
 namespace OffbeatWP\Content\Post {
     class PostModel {
         /**
-         * @param non-empty-string $key
-         * @param bool $format
+         * This function will return a custom field value for a specific field name/key.
+         * @param non-empty-string $key The field name or key.
+         * @param bool $format Whether or not to format the value. When <i>false</i>, a field will not use its 'return option' to format the value but return only what was saved in the database.
          * @return mixed
          */
         public function getField(string $key, bool $format = true);
 
         /**
-         * @param non-empty-string $key
-         * @param mixed $value
-         * @return bool
+         * @param non-empty-string $key The field name or key.
+         * @param mixed $value The value to save in the database.
+         * @return bool Returns <i>true</i> on successful update or <i>false</i> on failure.
          */
         public function updateField(string $key, $value): bool;
     }
 
     class TermModel {
         /**
-         * @param non-empty-string $key
-         * @param bool $format
+         * This function will return a custom field value for a specific field name/key.
+         * @param non-empty-string $key The field name or key.
+         * @param $format Whether or not to format the value. When <i>false</i>, a field will not use its 'return option' to format the value but return only what was saved in the database.
          * @return mixed
          */
         public function getField(string $key, bool $format = true);
