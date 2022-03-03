@@ -27,7 +27,7 @@ class Service extends AbstractService {
 
     /**
      * @param mixed $value
-     * @return float|int|null
+     * @return float|int
      */
     public function acfNumericStringToNumber($value)
     {
