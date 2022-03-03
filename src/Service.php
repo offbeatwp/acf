@@ -21,6 +21,20 @@ class Service extends AbstractService {
         $this->registerMacros();
         $this->registerRelationHooks();
         $this->registerFields();
+
+        add_filter('acf/format_value/type=number', [$this, 'acfNumericStringToNumber'], 20, 3);
+    }
+
+    /**
+     * @param mixed $value
+     * @return float|int|null
+     */
+    public function acfNumericStringToNumber($value)
+    {
+        $intValue = (int)$value;
+        $floatValue = (float)$value;
+
+        return ((float)$intValue === $floatValue) ? $intValue : $floatValue;
     }
 
     // Registry Methods
