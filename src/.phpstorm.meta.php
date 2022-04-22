@@ -2,6 +2,8 @@
 
 namespace OffbeatWP\Content\Post {
     class PostModel {
+        public function __construct($post = null);
+
         /**
          * This function will return a custom field value for a specific field name/key.
          * @param non-empty-string $key The field name or key.
@@ -31,6 +33,8 @@ namespace OffbeatWP\Content\Post {
 
 namespace OffbeatWP\Content\Taxonomy {
     class TermModel {
+        public function __construct($term);
+
         /**
          * This function will return a custom field value for a specific field name/key.
          * @param non-empty-string $key The field name or key.
