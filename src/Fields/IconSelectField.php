@@ -6,8 +6,10 @@ use OffbeatWP\AcfCore\Fields\AcfField;
 
 class IconSelectField extends AcfField {
     public function __construct() {
-        $this->setAttribute('acffield', [
-            'type' => AcfIconSelectField::FIELD_NAME
-        ]);
+        if (class_exists('acf_field')) {
+            $this->setAttribute('acffield', [
+                'type' => AcfIconSelectField::FIELD_NAME
+            ]);
+        }
     }
 }
