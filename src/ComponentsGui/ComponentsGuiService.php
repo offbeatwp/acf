@@ -62,9 +62,15 @@ class ComponentsGuiService extends AbstractService {
             return $form;
         }
 
-        $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
+        $transientName = 'offbeat/acf/components/fieldgroups/' . $component::getSlug();
 
-        if (!$fieldGroups) {
+        if (($fieldGroups = get_transient($transientName)) === false) {
+            $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
+
+            set_transient($transientName, $fieldGroups);
+        }
+
+        if (empty($fieldGroups)) {
             return $form;
         }
 
