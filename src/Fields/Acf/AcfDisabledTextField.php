@@ -21,7 +21,17 @@ class AcfDisabledTextField extends acf_field
 
 
         if ($renderAs === 'date_from_timestamp') {
-            $value = Carbon::createFromTimestamp($value)->format('d-m-Y H:m:s');
+            if (!is_numeric($value)) {
+                $value = strtotime($value);
+            }
+
+            if ($value) {
+               $value = Carbon::createFromTimestamp($value)->format('d-m-Y H:m:s');
+            } else {
+                $value = '';
+            }
+        } elseif ($renderAs === 'true_false') {
+            $value = ($value) ? __('Yes') : __('No');
         }
 
         printf(
@@ -36,7 +46,7 @@ class AcfDisabledTextField extends acf_field
         acf_render_field_setting($field, [
             'label'			=> 'Render as',
             'type'			=> 'select',
-            'choices'       => ['text' => 'Text', 'date_from_timestamp' => 'Date from Timestamp'],
+            'choices'       => ['text' => 'Text', 'date_from_timestamp' => 'Date from Timestamp', 'true_false' => 'True/False'],
             'name'			=> 'render_as'
         ]);
     }
