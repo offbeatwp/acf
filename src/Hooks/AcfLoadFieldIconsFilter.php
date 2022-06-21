@@ -12,7 +12,13 @@ class AcfLoadFieldIconsFilter extends AbstractFilter {
         }
 
         $field['choices'] = [];
-        $iconGlob = glob(get_stylesheet_directory() . '/assets/icons/*.svg') ?: [];
+
+        $path = '/assets/icons/';
+        if (!empty($field['icon_subfolder'])) {
+            $path .= $field['icon_subfolder'] . '/';
+        }
+
+        $iconGlob = glob(get_stylesheet_directory() . $path . '*.svg') ?: [];
 
         foreach ($iconGlob as $filename) {
             $basename = basename($filename, '.svg');

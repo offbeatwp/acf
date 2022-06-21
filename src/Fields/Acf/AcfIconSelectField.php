@@ -122,6 +122,18 @@ class AcfIconSelectField extends acf_field
                 ],
             ]
         );
+
+        // subfolder
+        acf_render_field_setting(
+            $field,
+            [
+                'label' => __('Icon Subfolder', 'offbeatwp'),
+                'instructions' => '',
+                'type' => 'text',
+                'name' => 'icon_subfolder',
+                'layout' => 'horizontal'
+            ]
+        );
     }
 
     public function update_field($field)
@@ -170,6 +182,22 @@ class AcfIconSelectField extends acf_field
 
         return $schema;
     }
+
+    public function input_admin_footer()
+    {
+        echo '<script>
+        let iconLabels = document.querySelectorAll(`.acf-field-offbeat-icon-select .acf-button-group label`);
+        iconLabels.forEach((label) => {
+            label.addEventListener(`click`, () => {
+                iconLabels.forEach((_label) => {
+                    _label.classList.remove(`selected`);
+                });
+                
+                label.classList.add(`selected`);
+                label.querySelector(`input type=["radio"]`).click();
+            });
+        });
+        </script>';}
 
     public function input_admin_enqueue_scripts()
     {
