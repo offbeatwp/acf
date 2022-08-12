@@ -25,7 +25,7 @@ class AcfHiddenUniqueIdField extends acf_field
     public function input_admin_head()
     {
         printf('<style>
-            [data-type="'. $this->name .'"] {
+            [data-type="'. $this->name .'"]:not(.acf-field-object) {
                 display: none !important;
             }
         </style>');
