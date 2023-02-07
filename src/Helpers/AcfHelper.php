@@ -5,7 +5,7 @@ namespace OffbeatWP\Acf\Helpers;
 final class AcfHelper
 {
     /**
-     * Returns an option or <i>null</i> if the option does not pass the (optional) provided filter.
+     * Returns the value of an option or <i>null</i> if the value does not pass the provided filter.
      * @see filter_var()
      * @param string $metaKey The key of the option to retrieve.
      * @param int $filter [optional] The ID of the filter to apply. The manual page lists the available filters.
@@ -15,6 +15,6 @@ final class AcfHelper
     public static function getOption(string $metaKey, int $filter = FILTER_DEFAULT, $options = 0)
     {
         $value = get_field($metaKey, 'option');
-        return filter_var($value, $filter) ? $value : null;
+        return filter_var($value, $filter, $options) ? $value : null;
     }
 }
