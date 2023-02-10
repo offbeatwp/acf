@@ -9,6 +9,9 @@
             "email": "chris@raow.nl"
         }
     ],
+    "require": {
+        "php": ">=7.4"
+    },
     "autoload": {
         "psr-4": {
             "OffbeatWP\\Acf\\": "src"

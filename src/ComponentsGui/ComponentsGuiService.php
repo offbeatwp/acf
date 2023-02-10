@@ -63,8 +63,9 @@ class ComponentsGuiService extends AbstractService {
         }
 
         $transientName = 'offbeat/acf/components/fieldgroups/' . $component::getSlug();
+        $fieldGroups = get_transient($transientName);
 
-        if (($fieldGroups = get_transient($transientName)) === false) {
+        if ($fieldGroups === false) {
             $fieldGroups = acf_get_field_groups(['offbeatwp_component' => $component::getSlug()]);
 
             set_transient($transientName, $fieldGroups);
