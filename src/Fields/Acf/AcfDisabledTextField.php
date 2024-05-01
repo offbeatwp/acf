@@ -33,7 +33,7 @@ class AcfDisabledTextField extends acf_field
             }
         } elseif ($renderAs === 'true_false') {
             $value = ($value) ? __('Yes') : __('No');
-        } elseif ($renderAs === 'map_values' && array_key_exists($value, $field['render_as_map'] ?? [])) {
+        } elseif ($renderAs === 'map_values' && array_key_exists($value, $renderAsMap)) {
             $value = $renderAsMap[$value];
         }
 
@@ -74,11 +74,11 @@ class AcfDisabledTextField extends acf_field
     {
         $data = [];
 
-        foreach (explode('\n', $value) as $line) {
+        foreach (explode(PHP_EOL, $value) as $line) {
             $keyVal = explode(' : ', $line);
 
             if (count($keyVal) === 2) {
-                $data[$keyVal[0]] = $data[$keyVal[1]];
+                $data[$keyVal[0]] = str_replace(["\r", "\n"], '', $keyVal[1]);
             }
         }
 
