@@ -26,7 +26,7 @@ class AcfDisabledTextField extends acf_field
                 $value = strtotime($value);
             }
 
-            if ($value) {
+            if ($value && is_string($value)) {
                 $value = WpDateTime::createFromFormat('U', $value, new DateTimeZone('UTC'))->format();
             } else {
                 $value = '';
