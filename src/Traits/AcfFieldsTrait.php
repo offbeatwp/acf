@@ -6,7 +6,7 @@ trait AcfFieldsTrait
 {
     /**
      * This function will return a custom field value for a specific field name/key + post_id.<br>
-     * There is a 3rd parameter to turn on/off formating.<br>
+     * There is a 2nd parameter to turn on/off formatting.<br>
      * This means that an image field will not use its 'return option' to format the value but return only what was saved in the database.
      * @param string $name The field name or key.
      * @param bool $format Whether or not to format the value as described above.
