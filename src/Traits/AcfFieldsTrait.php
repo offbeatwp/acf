@@ -27,7 +27,7 @@ trait AcfFieldsTrait
      * @param bool $format Whether to format the field value.
      * @return array|null
      */
-    final public function getFieldObject(string $name, bool $format = true)
+    final public function getFieldObject(string $name, bool $format = true): ?array
     {
         if (!function_exists('get_field_object')) {
             return null;
