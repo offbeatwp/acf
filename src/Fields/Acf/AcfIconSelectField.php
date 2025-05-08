@@ -186,18 +186,21 @@ class AcfIconSelectField extends acf_field
     public function input_admin_footer()
     {
         echo '<script>
-        let iconLabels = document.querySelectorAll(`.acf-field-offbeat-icon-select .acf-button-group label`);
-        iconLabels.forEach((label) => {
-            label.addEventListener(`click`, () => {
-                iconLabels.forEach((_label) => {
-                    _label.classList.remove(`selected`);
-                });
-                
-                label.classList.add(`selected`);
-                label.querySelector(`input type=["radio"]`).click();
+            document.querySelectorAll(`.acf-field-offbeat-icon-select`).forEach((group) => {
+                const iconLabels = group.querySelectorAll(`.acf-button-group label`);
+                iconLabels.forEach((label) => {
+                    label.addEventListener(`click`, () => {
+                        iconLabels.forEach((_label) => {
+                            _label.classList.remove(`selected`);
+                        });
+                        
+                        label.classList.add(`selected`);
+                        label.querySelector(`input type=["radio"]`).click();
+                    });
+                }); 
             });
-        });
-        </script>';}
+        </script>';
+    }
 
     public function input_admin_enqueue_scripts()
     {
