@@ -14,7 +14,12 @@ final class AcfHelper
      */
     public static function getOption(string $metaKey, int $filter = FILTER_DEFAULT, $options = 0)
     {
-        $value = get_field($metaKey, 'option');
+        if (function_exists('get_field')) {
+            $value = get_field($metaKey, 'option');
+        } else {
+            $value = get_option('options_' . $metaKey);
+        }
+
         return filter_var($value, $filter, $options) ? $value : null;
     }
 }
