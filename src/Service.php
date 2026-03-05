@@ -6,7 +6,6 @@ use OffbeatWP\Acf\Fields\Acf\AcfDisabledTextField;
 use OffbeatWP\Acf\Fields\Acf\AcfHiddenUniqueIdField;
 use OffbeatWP\Acf\Fields\Acf\AcfIconSelectField;
 use OffbeatWP\Acf\Fields\Acf\AcfThemeColorField;
-use OffbeatWP\Acf\Hooks\AcfConvertPostObject;
 use OffbeatWP\Acf\Hooks\AcfLoadFieldIconsFilter;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
 use OffbeatWP\Acf\Hooks\AcfPostRelationships;
@@ -83,8 +82,6 @@ class Service extends AbstractService
         foreach (AcfPostRelationships::RELATION_FIELD_TYPES as $fieldType) {
             offbeat('hooks')->addFilter('acf/update_value/type=' . $fieldType, AcfPostRelationships::class, 10, 3);
         }
-
-        offbeat('hooks')->addFilter('acf/format_value/type=relationship', AcfConvertPostObject::class, 99, 3);
     }
 
     private function registerFields(): void
