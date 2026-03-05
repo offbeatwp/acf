@@ -17,20 +17,25 @@ use OffbeatWP\Content\Post\PostModel;
 class Service extends AbstractService {
 
     public function register() {
-        $this->registerAttributeHooks();
+        if (function_exists('get_field')) {
+            $this->registerAttributeHooks();
+        }
+
         $this->registerMacros();
         $this->registerRelationHooks();
         $this->registerFields();
     }
 
     // Registry Methods
-    private function registerAttributeHooks() {
+    private function registerAttributeHooks(): void
+    {
         offbeat('hooks')->addFilter('post_attribute', AcfPostAttributeFilter::class, 10, 3);
         offbeat('hooks')->addFilter('term_attribute', AcfTermAttributeFilter::class, 10, 3);
         offbeat('hooks')->addFilter('acf/load_field', AcfLoadFieldIconsFilter::class, 10, 3);
     }
 
-    private function registerMacros() {
+    private function registerMacros(): void
+    {
         PostModel::macro('getField', function ($name, $format = true) {
             if (!function_exists('get_field')) {
                 return null;
@@ -68,13 +73,15 @@ class Service extends AbstractService {
         });
     }
 
-    private function registerRelationHooks() {
+    private function registerRelationHooks(): void
+    {
         offbeat('hooks')->addFilter('acf/update_value/type=relationship', AcfPostRelationships::class, 10, 4);
         offbeat('hooks')->addFilter('acf/update_value/type=post_object', AcfPostRelationships::class, 10, 4);
         offbeat('hooks')->addFilter('acf/format_value/type=relationship', AcfConverPostObject::class, 99, 3);
     }
 
-    private function registerFields() {
+    private function registerFields(): void
+    {
         if (function_exists('add_action') && class_exists('acf_field')) {
             add_action('acf/include_field_types', static function () {
                 new AcfHiddenUniqueIdField();
