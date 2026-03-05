@@ -1,11 +1,11 @@
 <?php
+
 namespace OffbeatWP\Acf;
 
 use OffbeatWP\Acf\Fields\Acf\AcfDisabledTextField;
 use OffbeatWP\Acf\Fields\Acf\AcfHiddenUniqueIdField;
 use OffbeatWP\Acf\Fields\Acf\AcfIconSelectField;
 use OffbeatWP\Acf\Fields\Acf\AcfThemeColorField;
-use OffbeatWP\Acf\Hooks\AcfConverPostObject;
 use OffbeatWP\Acf\Hooks\AcfLoadFieldIconsFilter;
 use OffbeatWP\Acf\Hooks\AcfPostAttributeFilter;
 use OffbeatWP\Acf\Hooks\AcfPostRelationships;
@@ -14,9 +14,11 @@ use OffbeatWP\Content\Taxonomy\TermModel;
 use OffbeatWP\Services\AbstractService;
 use OffbeatWP\Content\Post\PostModel;
 
-class Service extends AbstractService {
+class Service extends AbstractService
+{
 
-    public function register() {
+    public function register()
+    {
         if (function_exists('get_field')) {
             $this->registerAttributeHooks();
         }
@@ -75,9 +77,11 @@ class Service extends AbstractService {
 
     private function registerRelationHooks(): void
     {
-        offbeat('hooks')->addFilter('acf/update_value/type=relationship', AcfPostRelationships::class, 10, 4);
-        offbeat('hooks')->addFilter('acf/update_value/type=post_object', AcfPostRelationships::class, 10, 4);
-        offbeat('hooks')->addFilter('acf/format_value/type=relationship', AcfConverPostObject::class, 99, 3);
+
+        offbeat('hooks')->addFilter('acf/update_value/type=repeater', AcfPostRelationships::class, 10, 3);
+        foreach (AcfPostRelationships::RELATION_FIELD_TYPES as $fieldType) {
+            offbeat('hooks')->addFilter('acf/update_value/type=' . $fieldType, AcfPostRelationships::class, 10, 3);
+        }
     }
 
     private function registerFields(): void
