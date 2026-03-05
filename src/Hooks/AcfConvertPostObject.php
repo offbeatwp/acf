@@ -3,7 +3,7 @@ namespace OffbeatWP\Acf\Hooks;
 
 use OffbeatWP\Hooks\AbstractFilter;
 
-class AcfConverPostObject extends AbstractFilter {
+class AcfConvertPostObject extends AbstractFilter {
     /**
      * @param mixed $value
      * @param int|numeric-string $postId

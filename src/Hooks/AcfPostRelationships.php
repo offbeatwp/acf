@@ -1,49 +1,74 @@
 <?php
+
 namespace OffbeatWP\Acf\Hooks;
 
 use Exception;
+use OffbeatWP\Content\Post\PostModel;
 use OffbeatWP\Hooks\AbstractFilter;
 
-class AcfPostRelationships extends AbstractFilter {
+class AcfPostRelationships extends AbstractFilter
+{
+    const RELATION_FIELD_TYPES = ['relationship', 'post_object'];
+
     /**
      * @throws Exception
      * @param mixed $value
      * @param int|string $postId
      * @param array $field
-     * @param mixed $_value
      * @return mixed
      */
-    public function filter($value, $postId, $field, $_value) {
+    public function filter($value, $postId, $field)
+    {
         if (!is_numeric($postId)) {
             return $value;
         }
 
         $post = offbeat('post')->get($postId);
-
         if (!$post) {
             throw new Exception('Post not found');
         }
 
-        $method = $post->getMethodByRelationKey($field['name']);
+        if ($field['type'] === 'repeater' && !empty($field['sub_fields'])) {
+            foreach ($field['sub_fields'] as $subfield) {
+                if (!in_array($subfield['type'], self::RELATION_FIELD_TYPES)) {
+                    continue;
+                }
 
-        if (is_null($method) || !is_callable([$post, $method])) {
-            return $value;
-        }
-
-        if (!$value) {
-            if (method_exists($post->$method(), 'detachAll')) {
-                $post->$method()->detachAll();
-            } else {
-                $post->$method()->dissociateAll();
+                $this->applyRelationships(
+                    $this->aggregateRelationshipsFromRepeaterField(is_array($value) ? $value : [], $subfield['key']),
+                    $post,
+                    $field['name'] . ':' . $subfield['name'],
+                );
             }
-
-            return $value;
+        } elseif (in_array($field['type'], self::RELATION_FIELD_TYPES)) {
+            $this->applyRelationships(
+                !is_array($value) ? [$value] : $value,
+                $post,
+                $field['name']
+            );
         }
 
-        $relationships = $value;
+        return $value;
+    }
 
-        if (!is_array($relationships)) {
-            $relationships = [$relationships];
+    private function aggregateRelationshipsFromRepeaterField(array $value, string $fieldKey): array
+    {
+        return  array_reduce($value, function ($a, $item) use ($fieldKey) {
+            $fieldValue = $item[$fieldKey] ?? [];
+            return array_merge($a, !is_array($fieldValue) ? [$fieldValue] : $fieldValue);
+        }, []);
+    }
+
+    /**
+     * @param array $relationships
+     * @param PostModel $post
+     * @param string $key
+     */
+    private function applyRelationships($relationships, $post, $key): void
+    {
+        $method = $post->getMethodByRelationKey($key);
+        if (!$method || !is_callable([$post, $method])) {
+            return;
         }
 
         $relationships = array_map('intval', $relationships);
@@ -53,7 +78,5 @@ class AcfPostRelationships extends AbstractFilter {
         } else {
             $post->$method()->associate($relationships, false);
         }
-        
-        return $value;
     }
 }
