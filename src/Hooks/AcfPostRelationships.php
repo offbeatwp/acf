@@ -40,7 +40,7 @@ class AcfPostRelationships extends AbstractFilter
                     $field['name'] . ':' . $subfield['name'],
                 );
             }
-        } elseif (in_array($field['type'], self::RELATION_FIELD_TYPES)) {
+        } elseif (in_array($field['type'], self::RELATION_FIELD_TYPES, true)) {
             $this->applyRelationships(
                 !is_array($value) ? [$value] : $value,
                 $post,
@@ -53,18 +53,13 @@ class AcfPostRelationships extends AbstractFilter
 
     private function aggregateRelationshipsFromRepeaterField(array $value, string $fieldKey): array
     {
-        return  array_reduce($value, function ($a, $item) use ($fieldKey) {
+        return array_reduce($value, function ($a, $item) use ($fieldKey) {
             $fieldValue = $item[$fieldKey] ?? [];
-            return array_merge($a, !is_array($fieldValue) ? [$fieldValue] : $fieldValue);
+            return array_merge($a, is_array($fieldValue) ? $fieldValue : [$fieldValue]);
         }, []);
     }
 
-    /**
-     * @param array $relationships
-     * @param PostModel $post
-     * @param string $key
-     */
-    private function applyRelationships($relationships, $post, $key): void
+    private function applyRelationships(array $relationships, PostModel $post, string $key): void
     {
         $method = $post->getMethodByRelationKey($key);
         if (!$method || !is_callable([$post, $method])) {
